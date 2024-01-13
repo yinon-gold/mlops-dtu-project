@@ -48,6 +48,10 @@ embed:
 data:
 	python $(PROJECT_NAME)/data/make_dataset.py
 
+## Train the network with embeddings and clean data
+train:
+	python $(PROJECT_NAME)/data/train_model.py	
+
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
