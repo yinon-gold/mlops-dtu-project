@@ -18,6 +18,6 @@ if __name__ == '__main__':
     # Get the data and process it, use gpu if available
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     # Previous value n_factors=50
-    model = RecommenderNet(n_users, n_books, n_factors=2).to(device)
+    model = RecommenderNet(n_users, n_books, n_factors=50).to(device)
     # Save the model as model.pt
     torch.save(model.state_dict(), "models/embeddings.pt")
