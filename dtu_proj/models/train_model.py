@@ -39,7 +39,7 @@ if __name__ == '__main__':
                 
                 # Forward pass, have to stack them like so to do forward pass
                 outputs = model(torch.stack((user, book), dim=1))
-                loss = criterion(outputs, rating.float())
+                loss = criterion(outputs, rating.float().unsqueeze(1))
 
                 # Backward pass and optimization
                 optimizer.zero_grad()
