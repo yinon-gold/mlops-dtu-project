@@ -6,7 +6,7 @@ if __name__ == '__main__':
     from torch.nn import MSELoss
     from model import RecommenderNet
     from sklearn.model_selection import train_test_split
-
+    from tqdm import tqdm
 
     class RatingDataset(Dataset):
         def __init__(self, user_rating):
@@ -35,6 +35,7 @@ if __name__ == '__main__':
         optimizer = Adam(model.parameters(), lr=lr)
 
         for epoch in range(epochs):
+            progress_bar = tqdm(dataloader, desc='Epoch {:03d}'.format(epoch + 1), leave=False, disable=False)
             for user, book, rating in dataloader:
                 
                 # Forward pass, have to stack them like so to do forward pass
@@ -46,6 +47,8 @@ if __name__ == '__main__':
                 loss.backward()
                 optimizer.step()
 
+                progress_bar.set_postfix({'training_loss': '{:.3f}'.format(loss.item())})
+
             print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item()}')
 
 
@@ -55,7 +58,7 @@ model = torch.load("models/embeddings.pt")
 # load the data
 data = pd.read_csv('data/processed/clean.csv')
 # split the data
-train, test = train_test_split(data, test_size=0.2)
+train_data, test_data = train_test_split(data, test_size=0.2)
 
 # train the model
-# train(model, data)
+train(train, data)
