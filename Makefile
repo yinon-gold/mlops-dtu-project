@@ -50,7 +50,7 @@ data:
 
 ## Train the network with embeddings and clean data
 train:
-	python $(PROJECT_NAME)/data/train_model.py	
+	python $(PROJECT_NAME)/models/train_model.py	
 
 #################################################################################
 # Documentation RULES                                                           #
