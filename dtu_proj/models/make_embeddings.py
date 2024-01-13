@@ -17,4 +17,4 @@ if __name__ == '__main__':
     # Previous value n_factors=50
     model = RecommenderNet(n_users, n_books, n_factors=2).to(device)
     # Save the model as model.pt
-    torch.save(model.state_dict(), "models/model.pt")
+    torch.save(model.state_dict(), "models/embeddings.pt")
