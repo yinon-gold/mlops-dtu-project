@@ -65,7 +65,9 @@ print(n_users)
 
 # load previously calculated embeddings
 model = RecommenderNet(n_users, n_books, n_factors=50)
-moedel= model.load_state_dict(torch.load("models/embeddings.pt"))
+model.load_state_dict(torch.load("models/embeddings.pt"))
 
 # train the model
-train(model, train_data)
+trained_model = train(model, train_data)
+
+torch.save(trained_model.state_dict(), "models/model.pt")
