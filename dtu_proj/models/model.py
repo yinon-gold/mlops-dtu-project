@@ -1,6 +1,7 @@
 import torch
+import torch.nn as nn
 
-class MyNeuralNet(torch.nn.Module):
+class RecommenderNet(torch.nn.Module):
     """ Basic neural network class. 
     
     Args:
@@ -8,11 +9,13 @@ class MyNeuralNet(torch.nn.Module):
         out_features: number of output features
     
     """
-    def __init__(self, in_features: int, out_features: int) -> None:
-        self.l1 = torch.nn.Linear(in_features, 500)
-        self.l2 = torch.nn.Linear(500, out_features)
-        self.r = torch.nn.ReLU()
-    
+    def __init__(self, n_users, n_books, n_factors):
+        super().__init__()
+        self.user_emb = nn.Embedding(n_users, n_factors)
+        self.book_emb = nn.Embedding(n_books, n_factors)
+        self.drop = nn.Dropout(0.05)
+        self.fc = nn.Linear(n_factors*2, 1)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass of the model.
         
@@ -23,4 +26,9 @@ class MyNeuralNet(torch.nn.Module):
             Output tensor with shape [N,out_features]
 
         """
-        return self.l2(self.r(self.l1(x)))
+        users = self.user_emb(x[:,0])
+        books = self.book_emb(x[:,1])
+        x = torch.cat([users, books], dim=1)
+        x = self.drop(x)
+        x = self.fc(x)
+        return x
