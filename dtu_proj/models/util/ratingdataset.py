@@ -12,5 +12,7 @@ class RatingDataset(Dataset):
         user = torch.tensor(self.user_rating.iloc[idx]['ID'])
         book = torch.tensor(self.user_rating.iloc[idx]['Book_Id'])
         rating = torch.tensor(self.user_rating.iloc[idx]['Rating'])
-        return user, book, rating
+        name = torch.tensor(self.user_rating.iloc[idx]['Name'])
+        
+        return user, book, name, rating
             

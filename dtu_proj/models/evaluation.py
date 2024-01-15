@@ -16,8 +16,8 @@ if __name__ == '__main__':
     # split the data
     train_data, test_data = train_test_split(data, test_size=0.2, shuffle=False)
 
-    
-    trained_model = RecommenderNet(len(data['ID'].unique()) * 50, len(data['Book_Id'].unique()) * 50)
+    n_factor = 60
+    trained_model = RecommenderNet(len(data['ID'].unique()) * n_factor, len(data['Book_Id'].unique()) * n_factor,len(data['Names'].unique()) * n_factor)
     # Load the model
     trained_model.load_state_dict(torch.load("models/model.pt"))
 

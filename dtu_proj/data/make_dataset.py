@@ -1,9 +1,9 @@
 if __name__ == '__main__':
-    import torch
     import torch.nn as nn
     import pandas as pd
     import glob
     from pathlib import Path  
+    from keras.preprocessing.text import Tokenizer
 
     ##Read in the data
     book_rating = pd.DataFrame()
@@ -37,8 +37,12 @@ if __name__ == '__main__':
     rating_mapping = {'it was amazing': 5, 'really liked it': 4, 'liked it': 3, 'it was ok': 2, 'did not like it': 1}
     user_rating['Rating'] = user_rating['Rating'].map(rating_mapping)
 
+    tokenizer = Tokenizer()
+    tokenizer.fit_on_texts(user_rating['Name'])
+    user_rating['Name'] = tokenizer.texts_to_sequences(user_rating['Name'])
+
     # drop the description
-    user_rating = user_rating.drop('Name', axis=1)
+    #user_rating = user_rating.drop('Name', axis=1)
 
     # Save processed file 
     filepath = Path('data/processed/clean.csv')  
