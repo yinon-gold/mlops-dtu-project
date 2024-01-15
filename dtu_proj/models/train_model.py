@@ -22,7 +22,7 @@ if __name__ == '__main__':
             return user, book, rating
             
     # previous learning rate was 0.01
-    def train(model, user_rating, epochs=5, lr=0.1, batch_size=32):
+    def train(model, user_rating, epochs=5, lr=0.1, batch_size=256):
         # Create a DataLoader from the DataFrame
         dataset = RatingDataset(user_rating)
         dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -35,6 +35,7 @@ if __name__ == '__main__':
 
         for epoch in range(epochs):
             progress_bar = tqdm(dataloader, desc='Epoch {:03d}'.format(epoch + 1), leave=False, disable=False)
+            running_loss = 0.0
             for user, book, rating in dataloader:
                 
                 # Forward pass, have to stack them like so to do forward pass
@@ -45,6 +46,14 @@ if __name__ == '__main__':
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
+
+                # print statistics
+                running_loss += loss.item()
+                if i % 2000 == 1999:    # print every 2000 mini-batches
+                    print('[%d, %5d] loss: %.3f' %
+                        (epoch + 1, i + 1, running_loss / 2000))
+                    running_loss = 0.0
+
 
                 progress_bar.set_postfix({'training_loss': '{:.3f}'.format(loss.item())})
 
@@ -57,15 +66,12 @@ data = pd.read_csv('data/processed/clean.csv')
 train_data, test_data = train_test_split(data, test_size=0.2, shuffle=False, random_state=42)
 
 # get amount of unique books and users
-n_books = train_data['Book_Id'].unique().sum()
-n_users = train_data['ID'].unique().sum()
-
-print(n_books)
-print(n_users)
+n_books = train_data['Book_Id'].nunique()
+n_users = train_data['ID'].nunique()
 
 # load previously calculated embeddings
 model = RecommenderNet(n_users, n_books, n_factors=50)
-model.load_state_dict(torch.load("models/embeddings.pt"))
+#model.load_state_dict(torch.load("models/embeddings.pt"))
 
 # train the model
 trained_model = train(model, train_data)
