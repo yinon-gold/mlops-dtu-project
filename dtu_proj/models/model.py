@@ -13,8 +13,9 @@ class RecommenderNet(torch.nn.Module):
         super().__init__()
         self.user_emb = nn.Embedding(n_users, n_factors)
         self.book_emb = nn.Embedding(n_books, n_factors)
-        self.drop = nn.Dropout(0.2)
+        self.drop = nn.Dropout(0.1)
         self.fc = nn.Linear(n_factors*2, 1)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass of the model.
@@ -31,4 +32,6 @@ class RecommenderNet(torch.nn.Module):
         x = torch.cat([users, books], dim=1)
         x = self.drop(x)
         x = self.fc(x)
+        # Below restricts the output to between 1 and 5
+        x= self.sigmoid(x) * 4 + 1
         return x
