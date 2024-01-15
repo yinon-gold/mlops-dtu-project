@@ -9,11 +9,11 @@ class RecommenderNet(torch.nn.Module):
         out_features: number of output features
     
     """
-    def __init__(self, n_users, n_books, n_factors):
+    def __init__(self, n_users, n_books, n_factors=50):
         super().__init__()
         self.user_emb = nn.Embedding(n_users, n_factors)
         self.book_emb = nn.Embedding(n_books, n_factors)
-        self.drop = nn.Dropout(0.05)
+        self.drop = nn.Dropout(0.2)
         self.fc = nn.Linear(n_factors*2, 1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
