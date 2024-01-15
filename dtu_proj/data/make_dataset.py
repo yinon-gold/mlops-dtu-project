@@ -37,6 +37,9 @@ if __name__ == '__main__':
     rating_mapping = {'it was amazing': 5, 'really liked it': 4, 'liked it': 3, 'it was ok': 2, 'did not like it': 1}
     user_rating['Rating'] = user_rating['Rating'].map(rating_mapping)
 
+    # drop the description
+    user_rating = user_rating.drop('Name', axis=1)
+
     # Save processed file 
     filepath = Path('data/processed/clean.csv')  
     user_rating.to_csv(filepath)
