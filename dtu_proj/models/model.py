@@ -10,7 +10,7 @@ class RecommenderNet(torch.nn.Module):
         out_features: number of output features
     
     """
-    def __init__(self, n_users, n_books, n_names, n_factors=50, n_hidden=10):
+    def __init__(self, n_users, n_books, n_names, n_factors=50, n_hidden=124):
         super().__init__()
         self.user_emb = nn.Embedding(n_users, n_factors)
         self.book_emb = nn.Embedding(n_books, n_factors)
