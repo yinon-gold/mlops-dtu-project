@@ -27,7 +27,7 @@ if __name__ == '__main__':
             return user, book, rating
             
     # previous learning rate was 0.01
-    def train(model, train_data, test_data, epochs=50, lr=0.1, batch_size=256, step_size=5, gamma=0.1):
+    def train(model, train_data, test_data, epochs=50, lr=0.01, batch_size=256, step_size=5, gamma=0.1):
 
         # Create a DataLoader from the DataFrame
         train_dataset = RatingDataset(train_data)
