@@ -52,9 +52,6 @@ data:
 train:
 	python $(PROJECT_NAME)/models/train_model.py	
 
-eval:
-	python $(PROJECT_NAME)/models/evaluation.py	
-
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
