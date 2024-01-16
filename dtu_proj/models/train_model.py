@@ -26,7 +26,7 @@ if __name__ == '__main__':
             return user, book, rating
             
     # previous learning rate was 0.01
-    def train(model, user_rating, epochs=50, lr=0.001, batch_size=256):
+    def train(model, user_rating, epochs=10, lr=0.01, batch_size=256, step_size=2, gamma=0.1):
 
         # Create a DataLoader from the DataFrame
         dataset = RatingDataset(user_rating)
@@ -37,6 +37,7 @@ if __name__ == '__main__':
 
         # Use Adam optimizer
         optimizer = Adam(model.parameters(), lr=lr)
+        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
 
         for epoch in range(epochs):
             progress_bar = tqdm(dataloader, desc='Epoch {:03d}'.format(epoch + 1), leave=False, disable=False)
@@ -66,7 +67,9 @@ if __name__ == '__main__':
                 progress_bar.set_postfix({'training_loss': '{:.3f}'.format(loss.item())})
                 progress_bar.update()
 
-            print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item()}')
+
+            scheduler.step()
+            print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item()}, Learning Rate: {scheduler.get_last_lr()[0]}')
 
 
 # load the data

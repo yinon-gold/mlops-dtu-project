@@ -42,7 +42,7 @@ if __name__ == '__main__':
     user_rating['Name'] = tokenizer.texts_to_sequences(user_rating['Name'])
 
     # drop the description
-    #user_rating = user_rating.drop('Name', axis=1)
+    user_rating = user_rating.drop('Name', axis=1)
 
     # Save processed file 
     filepath = Path('data/processed/clean.csv')  
