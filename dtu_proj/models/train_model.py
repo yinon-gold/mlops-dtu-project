@@ -27,7 +27,7 @@ if __name__ == '__main__':
             return user, book, rating
             
     # previous learning rate was 0.01
-    def train(model, train_data, test_data, epochs=6, lr=0.1, batch_size=32, step_size=2, gamma=0.1):
+    def train(model, train_data, test_data, epochs=50, lr=0.1, batch_size=256, step_size=5, gamma=0.1):
 
         # Create a DataLoader from the DataFrame
         train_dataset = RatingDataset(train_data)
@@ -48,18 +48,6 @@ if __name__ == '__main__':
             
             for user, book, rating in train_dataloader:
                 
-                # Forward pass, have to stack them like so to do forward pass
-
-                #print(user.size())
-                #print(book.size())
-                #print(name.size())
-                
-                #print(data)
-                #print(torch.max(name))
-                #print(torch.max(book))
-                #print(torch.max(user))
-                #print(rating)
-
                 outputs = model(torch.stack((user, book),dim=1))
                 loss = criterion(outputs, rating.float().unsqueeze(1))
 
@@ -92,15 +80,18 @@ data = pd.read_csv('data/processed/clean.csv')
 # split the data
 train_data, test_data = train_test_split(data, test_size=0.2, shuffle=False, random_state=42)
 
-n_factor=300
+n_factor=128
 
 # get amount of unique books and users
-n_books = data['Book_Id'].nunique()*3
-n_users = data['ID'].nunique()*3
+n_users = data['ID'].max()+100
+n_books = data['Book_Id'].max()+100
 
 # load previously calculated embeddings
 model = RecommenderNet(n_users, n_books, n_factors=n_factor)
 #model.load_state_dict(torch.load("models/embeddings.pt"))
+
+
+print(model)
 
 # train the model
 trained_model = train(model, train_data, test_data)

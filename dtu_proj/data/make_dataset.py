@@ -22,7 +22,7 @@ if __name__ == '__main__':
         if user_rating_temp.empty:
             user_rating_temp = df
         else:
-            df = pd.concat([user_rating_temp, df], ignore_index=True)
+            user_rating_temp = pd.concat([user_rating_temp, df], ignore_index=True)
 
 
     #Import and merge revelvant data
