@@ -1,48 +1,60 @@
-import torch.nn as nn
 import pandas as pd
 import glob
-from pathlib import Path
-from keras.preprocessing.text import Tokenizer
-
-##Read in the data
-book_rating = pd.DataFrame()
-for file in glob.glob("data/raw/book*.csv"):
-    df = pd.read_csv(file)
-
-# discard empty
-    if book_rating.empty:
-        book_rating = df
-    else:
-        df = pd.concat([book_rating, df], ignore_index=True)
-
-user_rating_temp = pd.DataFrame()
-for file in glob.glob("data/raw/user_rating*.csv"):
-    df = pd.read_csv(file)
-    if user_rating_temp.empty:
-        user_rating_temp = df
-    else:
-        user_rating_temp = pd.concat([user_rating_temp, df], ignore_index=True)
+import os
 
 
-#Import and merge revelvant data
-book_map = user_rating_temp[['Name']]
-book_map.drop_duplicates(subset=['Name'],keep='first',inplace=True)
-book_map['Book_Id']=book_map.index.values
-user_rating_temp = pd.merge(user_rating_temp,book_map, on='Name', how='left')
-##Dropping users who have not rated any books
-user_rating = user_rating_temp[user_rating_temp['Name']!='Rating']
+data_dir = '../data'  # TODO move to config
+raw_data_dir = os.path.join(data_dir, 'raw')
+processed_data_dir = os.path.join(data_dir, 'processed')
 
-# Map reviews to numerical data
-rating_mapping = {'it was amazing': 5, 'really liked it': 4, 'liked it': 3, 'it was ok': 2, 'did not like it': 1}
-user_rating['Rating'] = user_rating['Rating'].map(rating_mapping)
+# Book dataset columns to keep
+cols = ['Id', 'Name', 'Description', 'Authors', 'PublishYear', 'Rating']
 
-tokenizer = Tokenizer()
-tokenizer.fit_on_texts(user_rating['Name'])
-user_rating['Name'] = tokenizer.texts_to_sequences(user_rating['Name'])
 
-# drop the description
-user_rating = user_rating.drop('Name', axis=1)
+def create_book_dataset():
+    if os.path.exists(os.path.join(processed_data_dir, 'books.csv')):
+        print('Book Dataset already exists')
+        return
+    book_df_list = []
+    for idx, file in enumerate(glob.glob(os.path.join(raw_data_dir, 'book*.csv'))):
+        book_df = pd.read_csv(file)
+        if 'Description' not in book_df.columns:
+            continue
+        book_df = book_df.dropna(subset=cols)
+        book_df_list.append(book_df)
+    books = pd.concat(book_df_list, ignore_index=True)
 
-# Save processed file
-filepath = Path('data/processed/clean.csv')
-user_rating.to_csv(filepath)
+    cols_to_drop = filter(lambda c: c not in cols, books.columns)
+    books.drop(columns=cols_to_drop, inplace=True)
+
+    if not os.path.exists(processed_data_dir):
+        os.mkdir(processed_data_dir)
+    books.to_csv(os.path.join(processed_data_dir, 'books.csv'), index=False)
+
+    print('Book Dataset Done')
+
+
+def create_rating_dataset():
+    if os.path.exists(os.path.join(processed_data_dir, 'ratings.csv')):
+        print('Rating Dataset already exists')
+        return
+    rating_df_list = []
+    for idx, file in enumerate(glob.glob(os.path.join(raw_data_dir, 'user_rating*.csv'))):
+        rating_df = pd.read_csv(file)
+        rating_df_list.append(rating_df)
+    ratings = pd.concat(rating_df_list, ignore_index=True)
+    rating_mapping = {'it was amazing': 5, 'really liked it': 4, 'liked it': 3, 'it was ok': 2,
+                      'did not like it': 1, "This user doesn't have any rating": 0}
+    ratings['Rating'] = ratings['Rating'].apply(lambda r: rating_mapping[r])
+    ratings = ratings[ratings['Rating'] != 0]
+
+    if not os.path.exists(processed_data_dir):
+        os.mkdir(processed_data_dir)
+    ratings.to_csv(os.path.join(processed_data_dir, 'ratings.csv'), index=False)
+    print('Rating Dataset Done')
+
+
+if __name__ == '__main__':
+    create_book_dataset()
+    create_rating_dataset()
+    print('Done creating datasets')
