@@ -540,6 +540,15 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 > *The biggest challenges in the project was using ... tool to do ... . The reason for this was ...*
 >
 > Answer:
+We spend considerably too much time fine tuning the model architecture and hyperparameters. Particularly 
+we struggled with generating high quality embeddings for proper training. However, The most time-consuming aspect 
+of the project was understanding and implementing the various tools and services, 
+particularly those related to Google Cloud Platform (GCP). We faced challenges in setting up and configuring the GCP services, 
+managing dependencies, and ensuring the smooth running of our experiments in the cloud. 
+To overcome these challenges, we extensively researched the tools and services, consulted online tutorials and documentation. 
+Additionally, we spent considerable time debugging and 
+optimizing our code to ensure its efficiency and effectiveness. Regular team meetings and collaborative 
+problem-solving also played a crucial role in overcoming the challenges.
 
 --- question 26 fill here ---
 
