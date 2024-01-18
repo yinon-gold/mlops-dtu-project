@@ -316,7 +316,9 @@ high-quality code and to keep track of how code changes affect model performance
 >
 > Answer:
 
---- question 12 fill here ---
+For our experiments we used OmegaConf to load the configurations and manage our hyperparameters.
+These include: learning rate, batch size, epochs, loss function, and embedding size (hidden size of our BERT variant), and the bert checkpoint (model) we used from HuggingFace.
+For a simple control over wandb logging we also included a flag to turn it on or off using argparser.
 
 ### Question 13
 
@@ -331,7 +333,8 @@ high-quality code and to keep track of how code changes affect model performance
 >
 > Answer:
 
---- question 13 fill here ---
+We made sure to use a seed for all random operations. We also made sure to use the same data for all experiments.
+To reproduce an experiment one would have to run the same config file with the same data - we just need to use the same `config.yaml`.
 
 ### Question 14
 
@@ -348,7 +351,15 @@ high-quality code and to keep track of how code changes affect model performance
 >
 > Answer:
 
---- question 14 fill here ---
+After we finalized our dataset, we first ran a sanity check with a small subset of the data to ensure that the model was working as intended.
+As we saw, the model had improved over the small training set, but failed to generalize to the validation set.
+We think this is due to the small size of the training set, and the fact that the model was overfitting to the training set.
+
+It plausible that because our model's input is a changing sequence length for a transformer embedding, we needed to use a large capacity of training for it to converge. 
+This is why we decided to increase the size of the subset used for experimentation.
+After that, we ran a hyperparameter sweep to find the best hyperparameters for our model - looking at different learning rates we can use.
+
+Although we didn't use this option, we could've searched for the best lr scheduler as well, but we decided to use a constant learning rate.
 
 ### Question 15
 
@@ -363,7 +374,10 @@ high-quality code and to keep track of how code changes affect model performance
 >
 > Answer:
 
---- question 15 fill here ---
+For experimenting with the model, we didn't use docker, as we had access to an HPC server with GPUs from our faculty.
+This allowed us to run our experiments faster, and with more resources than we would have had access to with docker on the cloud.
+
+However, we did use docker for our final model, as we wanted to deploy it on the cloud. We had a docker image for training, and one for inference.
 
 ### Question 16
 
@@ -377,12 +391,12 @@ high-quality code and to keep track of how code changes affect model performance
 > *run of our main code at some point that showed ...*
 >
 > Answer:
-﻿When encountering bugs during the execution of our experiments, we utilized a systematic debugging approach. 
+ 
+ 
+When encountering bugs during the execution of our experiments, we utilized a systematic debugging approach. 
 This involved identifying the issue, isolating the part of the code causing the problem, and then implementing a solution.
 We used various debugging tools and techniques, such as breakpoints, print statements, and logging, to assist in this process. 
 
-
---- question 16 fill here ---
 
 ## Working in the cloud
 
@@ -398,12 +412,13 @@ We used various debugging tools and techniques, such as breakpoints, print state
 > *We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...*
 >
 > Answer:
+ 
+
 Compute Engine: Service that allows for the creation of VMs adhoc. Used for training
 Artifact registry: Used to store out docker images for training and inference
 Vertex AI: Used with docker container to train more easily
 Bucket: Data storage, used to store our raw and processed data
 
---- question 17 fill here ---
 
 ### Question 18
 
@@ -450,7 +465,7 @@ We used a similar process for inference.
 ```markdown
 ![my_image](figures/registry.png)
 ```
---- question 20 fill here ---
+
 
 ### Question 21
 
@@ -506,7 +521,6 @@ We used a similar process for inference.
 
 Not more than 200dkk. Most expensive service was compute engine closely followed by storage.
 
---- question 24 fill here ---
 
 ## Overall discussion of project
 
@@ -540,6 +554,7 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 > *The biggest challenges in the project was using ... tool to do ... . The reason for this was ...*
 >
 > Answer:
+
 We spend considerably too much time fine tuning the model architecture and hyperparameters. Particularly 
 we struggled with generating high quality embeddings for proper training. However, The most time-consuming aspect 
 of the project was understanding and implementing the various tools and services, 
@@ -550,7 +565,6 @@ Additionally, we spent considerable time debugging and
 optimizing our code to ensure its efficiency and effectiveness. Regular team meetings and collaborative 
 problem-solving also played a crucial role in overcoming the challenges.
 
---- question 26 fill here ---
 
 ### Question 27
 
@@ -567,6 +581,6 @@ problem-solving also played a crucial role in overcoming the challenges.
 >
 > Answer:
 
-Studen s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
+Student s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
 
 --- question 27 fill here ---
