@@ -105,18 +105,18 @@ end of the project.
 >
 > Answer:90
 
---- question 1 fill here ---
+
 
 ### Question 2
 > **Enter the study number for each member in the group**
 >
 > Example:
 >
-> *s230356, sXXXXXX, sXXXXXX*
+> *sXXXXXX, sXXXXXX, sXXXXXX*
 >
 > Answer:
 
---- question 2 fill here ---
+s230356,
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -127,8 +127,13 @@ end of the project.
 > *We used the third-party framework ... in our project. We used functionality ... and functionality ... from the*
 > *package to do ... and ... in our project*.
 >
-> Answer: We used pytorch to create a MLP collaborative filtering model to provide book recommendations. 
-Embeddings were generated using tinybert. 
+> Answer: 
+
+﻿In our project, we utilized PyTorch, a popular machine learning library, to develop a Multi-Layer Perceptron (MLP) collaborative filtering model. 
+This model was specifically designed to provide recommendations for books. 
+To enhance the model's performance, we generated embeddings using TinyBERT, a smaller and faster version of the BERT model, which is renowned for its efficiency in natural language processing tasks. 
+Furthermore, we employed the Pandas library, a powerful data manipulation tool in Python, to handle the raw data. This involved formatting, merging, and processing the data in a manner that would enable the successful creation of embeddings. 
+This comprehensive approach ensured that our model was both effective and efficient.
 
 --- question 3 fill here ---
 
@@ -147,10 +152,18 @@ Embeddings were generated using tinybert.
 > *We used ... for managing our dependencies. The list of dependencies was auto-generated using ... . To get a*
 > *complete copy of our development environment, one would have to run the following commands*
 >
-> Answer: We used virtual environments to more easily manage dependencies. Requirements where then installed using pip and generated using 
-the pipreqs python packge.
+> Answer: 
 
---- question 4 fill here ---
+﻿In order to manage dependencies more efficiently, we utilized virtual environments. 
+The pipreqs python package was employed to generate requirements, which were subsequently installed using pip. 
+For a new team member to contribute to this project, the process is quite straightforward. 
+They simply need to establish a new virtual environment. 
+Following this, they must install the necessary requirements. 
+These can be found in a file named requirements.txt. 
+This approach ensures a smooth transition for new team members, 
+allowing them to quickly adapt and contribute to the project, while also maintaining consistency in the development environment.
+
+
 
 ### Question 5
 
@@ -165,11 +178,12 @@ the pipreqs python packge.
 > *experiments.*
 > Answer: 
 We used the notebooks folder for notebooks with inital data exploration to gain a better understanding of how best to create the model.
-The model is trained with the train_model.py script found in the models folder. This folder also contains the model.py file, which defines the actual model.
+The model is trained with the train_model.py script found in the models folder. 
+This folder also contains the model.py file, which defines the actual model.
 When training the script will read from various config files (.yaml) to properly set hyperparameters.
+In the models folder we also stored a script to generate evaluations- evaluations.py
+We store tests in the test folder and docker images in the docker folder.
 
-
---- question 5 fill here ---
 
 ### Question 6
 
@@ -179,9 +193,8 @@ When training the script will read from various config files (.yaml) to properly
 > Answer length: 50-100 words.
 >
 > Answer: 
-We followed the standard python style guide. Rules for code quality and format are important so that code remains as legible as possible for every
-contributor
-
+﻿We adhered to the conventional Python style guide. It's crucial to maintain code quality and formatting rules to ensure maximum legibility for all contributors. 
+This approach facilitates better understanding and collaboration among team members, enhancing the overall development process.
 
 --- question 6 fill here ---
 
@@ -231,12 +244,11 @@ contributor
 > *addition to the main branch. To merge code we ...*
 >
 > Answer: 
-Each new feature was created in a seperate branch and then pulled to develop. For the final release develop is pulled to main.
-We switched between branches as needed and did not have specific branches that belonged to only us. 
-Branches and pull requests make it easier to section off features or changes so that they can later be pulled into the working tree without 
-causing unncessary conflicts.
+﻿We adopted a systematic approach for feature development, where each new feature was crafted in a distinct branch, subsequently pulled into the 'develop' branch. For the final release, 'develop' was pulled into 'main'. 
+We fluidly switched between branches as per requirement, without any specific branches being exclusive to students. 
+The use of branches and pull requests greatly simplified the process. It facilitated the segregation of features or modifications, enabling their integration into the working tree at a later stage. 
+This strategy minimized potential conflicts, ensuring a smooth, efficient workflow, and maintaining the integrity of the project.
 
---- question 9 fill here ---
 
 ### Question 10
 
