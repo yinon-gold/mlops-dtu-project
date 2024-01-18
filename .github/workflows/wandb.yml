@@ -1,20 +1,20 @@
 name: Get WandB Runs
-on: [push]  # This triggers the action on every push to the repository. You can change this to suit your needs.
+on: [push]  
 
 jobs:
   get-runs:
-    runs-on: ubuntu-latest  # This job runs on the latest Ubuntu runner provided by GitHub Actions
+    runs-on: ubuntu-latest 
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2  # This action checks out your repository under $GITHUB_WORKSPACE
 
       - name: Get Runs From Weights & Biases
-        uses: machine-learning-apps/wandb-action@1.2  # Specify the version of the action you want to use
+        uses: machine-learning-apps/wandb-action@1.2  
         with:
-          PROJECT_NAME: 'dtu/dtu_proj'  # Replace with your WandB entity and project names
+          PROJECT_NAME: 'yinon-gold/mlops'  # Replace with your WandB entity and project names
           FILTER_GITHUB_SHA: ${{ github.sha }}  # Filters runs matching the commit SHA that triggered the action
           WANDB_API_KEY: 'bc09ba5761889f3ecfc86ca1ba79d002dc35b523'  # Your WandB API key
-          # Add any other optional inputs you need for the action
+          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # The GITHUB_TOKEN secret is automatically created by GitHub to use in your workflow
