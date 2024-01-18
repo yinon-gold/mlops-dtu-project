@@ -283,6 +283,18 @@ tuning the model and data pipeline
 > *... . In particular for our ..., we used ... .An example of a triggered workflow can be seen here: <weblink>*
 >
 > Answer:
+In this setup, every 'push' to the code repository initiates two actions. 
+
+Firstly, a linting program is triggered. Linting is a static code analysis tool that checks the source code for potential errors, bugs, stylistic errors, and suspicious constructs. 
+This helps maintain the code's quality, readability, and adherence to coding standards, thus reducing the likelihood of errors or bugs slipping into the production code.
+
+Secondly, the "Get Runs From Weights & Biases" action is initiated. 
+Weights & Biases (WandB) is a tool used for tracking and visualizing machine learning experiments. 
+This action queries your WandB project for runs that match the commit SHA (a unique identifier for each commit) that triggered the action. 
+This allows you to link the specific changes in your code to the corresponding results in your WandB project, enabling a clear and 
+efficient way to track the impact of each code change on the model's performance.
+This CI setup is an effective way to maintain 
+high-quality code and to keep track of how code changes affect model performance
 
 --- question 11 fill here ---
 
@@ -364,6 +376,10 @@ tuning the model and data pipeline
 > *run of our main code at some point that showed ...*
 >
 > Answer:
+﻿When encountering bugs during the execution of our experiments, we utilized a systematic debugging approach. 
+This involved identifying the issue, isolating the part of the code causing the problem, and then implementing a solution.
+We used various debugging tools and techniques, such as breakpoints, print statements, and logging, to assist in this process. 
+
 
 --- question 16 fill here ---
 
@@ -541,6 +557,6 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 >
 > Answer:
 
-Studen s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration.
+Studen s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
 
 --- question 27 fill here ---
