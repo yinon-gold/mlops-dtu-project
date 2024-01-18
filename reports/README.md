@@ -194,7 +194,8 @@ We store tests in the test folder and docker images in the docker folder.
 >
 > Answer: 
 ﻿We adhered to the conventional Python style guide. It's crucial to maintain code quality and formatting rules to ensure maximum legibility for all contributors. 
-This approach facilitates better understanding and collaboration among team members, enhancing the overall development process.
+This approach facilitates better understanding and collaboration among team members making the overall development process faster 
+and less painful.
 
 --- question 6 fill here ---
 
