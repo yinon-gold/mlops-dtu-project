@@ -5,3 +5,14 @@ workerPoolSpecs:
     replicaCount: 1
     containerSpec:
         imageUri: gcr.io/bookrecommendation-411013/gcp_vm_tester
+
+hyperparameters:
+  batch_size: 1
+  lr: 1e-4
+  epochs: 5
+  hidden_size: 128
+  activation: relu
+  dropout: 0.5
+
+data:
+    data_dir:
