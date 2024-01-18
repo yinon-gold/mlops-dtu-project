@@ -1,0 +1,3 @@
+- name: Get Runs From Weights & Biases
+  uses: machine-learning-apps/wandb-action@1.2
+            
