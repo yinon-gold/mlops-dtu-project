@@ -12,6 +12,8 @@ from tqdm import tqdm
 import argparse
 import wandb
 import time
+from omegaconf import OmegaConf
+import os
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -19,23 +21,22 @@ print(f'{device=}')
 
 
 # previous learning rate was 0.01
-def train(model, dataset, epoch, prefix='train', lr=0.1, batch_size=32, step_size=2, gamma=0.1):
+def train_epoch(model, dataset, optimizer, loss, epoch, train=True, lr=1e-5, batch_size=1):
 
     # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
+    prefix = 'train' if train else 'val'
+    model.train() if train else model.eval()
 
-    loss = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
-
-    with tqdm(DataLoader(dataset, batch_size=1)) as pbar:
+    with tqdm(DataLoader(dataset, batch_size=batch_size)) as pbar:
         for idx, batch in enumerate(pbar):
             batch = {k: batch[k].to(device) for k in batch.keys()}
             logits = model(batch)
             loss_value = loss(logits, batch['rating'])
-            loss_value.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-            pbar.set_description(f"n: {logits.shape[-1]}\tloss: {loss_value.item():.4f}")
-            pbar.update()
+            if train:
+                loss_value.backward()
+                optimizer.step()
+                optimizer.zero_grad(set_to_none=True)
+            pbar.set_description(f"n: {logits.shape[-1]}  loss: {loss_value.item():.4f}")
             wandb.log(
                 {
                     "epoch": epoch,
@@ -45,56 +46,32 @@ def train(model, dataset, epoch, prefix='train', lr=0.1, batch_size=32, step_siz
                 }
             )
 
-    # for epoch in range(epochs):
-    #     progress_bar = tqdm(train_dataloader, desc='Epoch {:03d}'.format(epoch + 1), leave=False, disable=False)
-    #
-    #     for user, book, rating in train_dataloader:
-    #
-    #         # Forward pass, have to stack them like so to do forward pass
-    #         outputs = model(torch.stack((user, book),dim=1))
-    #         loss = criterion(outputs, rating.float().unsqueeze(1))
-    #
-    #         # Backward pass and optimization
-    #         optimizer.zero_grad()
-    #         loss.backward()
-    #         optimizer.step()
-    #
-    #
-    #         progress_bar.set_postfix({'training_loss': '{:.3f}'.format(loss.item())})
-    #         progress_bar.update()
-    #     # Validation loss
-    #     model.eval()
-    #     total_test_loss = 0
-    #     with torch.no_grad():
-    #         for user, book, rating in test_dataloader:
-    #             test_outputs = model(torch.stack((user, book), dim=1))
-    #             test_loss = criterion(test_outputs, rating.float().unsqueeze(1))
-    #             total_test_loss += test_loss.item()
-    #     avg_test_loss = total_test_loss / len(test_dataloader)
-    #     model.train()
-    #
-    #     scheduler.step()
-    #     print(f'Epoch {epoch+1}/{epochs}, Training Loss: {loss.item()}, Validation Loss: {avg_test_loss}, Learning Rate: {scheduler.get_last_lr()[0]}')
-    #
-    # return model
-
 
 def main(args):
 
-    epochs = 2
-    lr = 1e-4
-    data_dir = 'data'
-    checkpoint = "prajjwal1/bert-tiny"  # L=2, H=128
-    BATCH_SIZE = 1
+    config = OmegaConf.load(os.path.join('dtu_proj', 'config.yaml'))
+
     this_time = time.strftime("%Y-%m-%d_%H-%M")
 
-    bert_tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    bert_tokenizer = AutoTokenizer.from_pretrained(config.hp.bert_checkpoint)
     print('tokenizer created')
-    dataset = UserDataset(data_dir, tokenizer=bert_tokenizer, max_len=512)
+    dataset = UserDataset(config.hp.data_dir, tokenizer=bert_tokenizer, max_len=512)
     print(f'{len(dataset)=}')
-    model = BERTClassifier(device=device, checkpoint=checkpoint)
+
+    split_lengths = [int(config.hp.train_ratio * len(dataset)),
+                     int(config.hp.val_ratio * len(dataset)),
+                     len(dataset) - int(config.hp.train_ratio * len(dataset)) - int(config.hp.val_ratio * len(dataset))]
+    print(f'{split_lengths=}')
+    train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(dataset, lengths=split_lengths,)
+
+    # print(f'{len(train_dataset)=} {len(val_dataset)=} {len(test_dataset)=}')
+
+    model = BERTClassifier(device=device, checkpoint=config.hp.bert_checkpoint, freeze_bert=config.hp.freeze_bert)
     print('BERTClassifier created')
     model.to(device)
+
+    loss = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=config.hp.lr)
 
     wandb_mode = 'online' if args.wandb else 'disabled'
     wandb.init(
@@ -103,16 +80,58 @@ def main(args):
         save_code=True,
         # track hyperparameters and run metadata
         config={
-            "exp_name": f"bert_e_{str(epochs)}_b_{str(BATCH_SIZE)}_{this_time}_lr_{str(lr)}",
-            "batch_size": BATCH_SIZE,
-            "learning_rate": str(lr),
-            "epochs": epochs,
+            "exp_name": f"bert_{this_time}",
+            "batch_size": config.hp.batch_size,
+            "learning_rate": str(config.hp.lr),
+            "epochs": config.hp.epochs,
         },
     )
 
-    for epoch in range(epochs):
+    for epoch in range(config.hp.epochs):
         print(f'{epoch=}')
-        train(model, dataset, epoch, prefix='train', lr=lr)
+        train_epoch(
+            model=model,
+            dataset=train_dataset,
+            epoch=epoch,
+            optimizer=optimizer,
+            loss=loss,
+            train=True,
+            lr=config.hp.lr,
+            batch_size=config.hp.batch_size)
+
+        with torch.no_grad():
+            train_epoch(
+                model=model,
+                dataset=val_dataset,
+                epoch=epoch,
+                optimizer=optimizer,
+                loss=loss,
+                train=False,
+                lr=config.hp.lr,
+                batch_size=config.hp.batch_size)
+
+        state_dict = {
+            'epoch': epoch,
+            'state_dict': model.state_dict(),
+            'optimizer': optimizer.state_dict(),
+        }
+        torch.save(state_dict, f'{config.hp.checkpoint_dir}/bert_e_{str(epoch)}_{this_time}.pt')
+
+    with torch.no_grad():
+        train_epoch(
+            model=model,
+            dataset=test_dataset,
+            epoch=0,
+            optimizer=optimizer,
+            loss=loss,
+            train=False,
+            lr=config.hp.lr,
+            batch_size=config.hp.batch_size)
+
+    loaded_state_dict = torch.load(f'{config.hp.checkpoint_dir}/bert_e_{str(config.hp.epochs-1)}_{this_time}.pt')
+    model.load_state_dict(loaded_state_dict['state_dict'])
+    model.eval()
+    print('model loaded')
 
 
 if __name__ == '__main__':
