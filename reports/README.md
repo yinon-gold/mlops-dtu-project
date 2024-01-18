@@ -194,7 +194,8 @@ We store tests in the test folder and docker images in the docker folder.
 >
 > Answer: 
 ﻿We adhered to the conventional Python style guide. It's crucial to maintain code quality and formatting rules to ensure maximum legibility for all contributors. 
-This approach facilitates better understanding and collaboration among team members, enhancing the overall development process.
+This approach facilitates better understanding and collaboration among team members making the overall development process faster 
+and less painful.
 
 --- question 6 fill here ---
 
@@ -283,6 +284,18 @@ tuning the model and data pipeline
 > *... . In particular for our ..., we used ... .An example of a triggered workflow can be seen here: <weblink>*
 >
 > Answer:
+In this setup, every 'push' to the code repository initiates two actions. 
+
+Firstly, a linting program is triggered. Linting is a static code analysis tool that checks the source code for potential errors, bugs, stylistic errors, and suspicious constructs. 
+This helps maintain the code's quality, readability, and adherence to coding standards, thus reducing the likelihood of errors or bugs slipping into the production code.
+
+Secondly, the "Get Runs From Weights & Biases" action is initiated. 
+Weights & Biases (WandB) is a tool used for tracking and visualizing machine learning experiments. 
+This action queries your WandB project for runs that match the commit SHA (a unique identifier for each commit) that triggered the action. 
+This allows you to link the specific changes in your code to the corresponding results in your WandB project, enabling a clear and 
+efficient way to track the impact of each code change on the model's performance.
+This CI setup is an effective way to maintain 
+high-quality code and to keep track of how code changes affect model performance
 
 --- question 11 fill here ---
 
@@ -364,6 +377,10 @@ tuning the model and data pipeline
 > *run of our main code at some point that showed ...*
 >
 > Answer:
+﻿When encountering bugs during the execution of our experiments, we utilized a systematic debugging approach. 
+This involved identifying the issue, isolating the part of the code causing the problem, and then implementing a solution.
+We used various debugging tools and techniques, such as breakpoints, print statements, and logging, to assist in this process. 
+
 
 --- question 16 fill here ---
 
@@ -523,6 +540,15 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 > *The biggest challenges in the project was using ... tool to do ... . The reason for this was ...*
 >
 > Answer:
+We spend considerably too much time fine tuning the model architecture and hyperparameters. Particularly 
+we struggled with generating high quality embeddings for proper training. However, The most time-consuming aspect 
+of the project was understanding and implementing the various tools and services, 
+particularly those related to Google Cloud Platform (GCP). We faced challenges in setting up and configuring the GCP services, 
+managing dependencies, and ensuring the smooth running of our experiments in the cloud. 
+To overcome these challenges, we extensively researched the tools and services, consulted online tutorials and documentation. 
+Additionally, we spent considerable time debugging and 
+optimizing our code to ensure its efficiency and effectiveness. Regular team meetings and collaborative 
+problem-solving also played a crucial role in overcoming the challenges.
 
 --- question 26 fill here ---
 
@@ -541,6 +567,6 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 >
 > Answer:
 
-Studen s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration.
+Studen s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
 
 --- question 27 fill here ---
