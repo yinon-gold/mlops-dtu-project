@@ -1,5 +1,11 @@
 docs/site/
 
+# data folder
+data/
+
+# model
+*.pt
+
 # test cache
 manual_test/
 
