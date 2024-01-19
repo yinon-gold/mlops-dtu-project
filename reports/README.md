@@ -679,7 +679,7 @@ that every group member was aware of the total scope of the project.
 
 Student s230356 worked on setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions.
 
-Student s240558 worked on model architecture, training and evaluation methods, and experimentation. Also was in charge of the Dataset class, and the data processing pipeline. Deployed the model to GCP Cloud Functions.
+Student s240558 Was in charge of model architecture, training and evaluation methods, and experimentation. Also was in charge of the Dataset class, and the data processing pipeline. Deployed the model to GCP Cloud Functions.
 
 Student s240541 had a role in fine-tuning the architecture, and was in charge of creating and deploying the cloud functions to serve the model in the cloud.
 
