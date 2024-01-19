@@ -1,0 +1,8 @@
+hyperparameters:
+  batch_size: 32
+  lr: 1e-4
+  epochs: 100
+  hidden_size: 256
+  num_layers: 2
+  activation: relu
+  dropout: 0.5

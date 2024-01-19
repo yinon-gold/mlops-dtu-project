@@ -40,9 +40,17 @@ clean:
 # PROJECT RULES                                                                 #
 #################################################################################
 
+## Make processed data into embeddings
+embed:
+	python $(PROJECT_NAME)/models/make_embeddings.py
+
 ## Process raw data into processed data
 data:
 	python $(PROJECT_NAME)/data/make_dataset.py
+
+## Train the network with embeddings and clean data
+train:
+	python $(PROJECT_NAME)/models/train_model.py	
 
 #################################################################################
 # Documentation RULES                                                           #

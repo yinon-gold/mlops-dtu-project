@@ -1,0 +1,25 @@
+# config_cpu.yaml
+workerPoolSpecs:
+    machineSpec:
+        machineType: n1-highmem-2
+    replicaCount: 1
+    containerSpec:
+        imageUri: gcr.io/bookrecommendation-411013/gcp_vm_tester
+
+hp:
+  batch_size: 1
+  lr: 1e-5
+  epochs: 5
+  hidden_size: 128
+  activation: relu
+  dropout: 0.5
+<<<<<<< Updated upstream
+  bert_checkpoint: prajjwal1/bert-tiny
+  freeze_bert: True
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  data_dir: data
+  checkpoint_dir: checkpoints
+=======
+>>>>>>> Stashed changes
