@@ -116,7 +116,7 @@ end of the project.
 >
 > Answer:
 
-s230356,
+s230356, s240558, s240541
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,13 +129,15 @@ s230356,
 >
 > Answer: 
 
-﻿In our project, we utilized PyTorch, a popular machine learning library, to develop a Multi-Layer Perceptron (MLP) collaborative filtering model. 
+In our project, we utilized PyTorch, a popular machine learning library, to develop a Multi-Layer Perceptron (MLP) collaborative filtering model. 
 This model was specifically designed to provide recommendations for books. 
-To enhance the model's performance, we generated embeddings using TinyBERT, a smaller and faster version of the BERT model, which is renowned for its efficiency in natural language processing tasks. 
-Furthermore, we employed the Pandas library, a powerful data manipulation tool in Python, to handle the raw data. This involved formatting, merging, and processing the data in a manner that would enable the successful creation of embeddings. 
+
+To describe a specific book and a user, we generated user and book embeddings using BERT-tiny, a smaller and faster version of the BERT model, pretrained for natural language processing tasks. 
+These embeddings were then fed into the MLP model, which was trained to predict the rating a user would give to a book.
+
+Furthermore, we used the Pandas library, a powerful data manipulation tool in Python, to handle the raw data. This involved formatting, merging, and processing the data in a manner that would enable the successful creation of embeddings. 
 This comprehensive approach ensured that our model was both effective and efficient.
 
---- question 3 fill here ---
 
 ## Coding environment
 
@@ -154,7 +156,7 @@ This comprehensive approach ensured that our model was both effective and effici
 >
 > Answer: 
 
-﻿In order to manage dependencies more efficiently, we utilized virtual environments. 
+In order to manage dependencies more efficiently, we utilized virtual environments. 
 The pipreqs python package was employed to generate requirements, which were subsequently installed using pip. 
 For a new team member to contribute to this project, the process is quite straightforward. 
 They simply need to establish a new virtual environment. 
@@ -176,7 +178,8 @@ allowing them to quickly adapt and contribute to the project, while also maintai
 > *From the cookiecutter template we have filled out the ... , ... and ... folder. We have removed the ... folder*
 > *because we did not use any ... in our project. We have added an ... folder that contains ... for running our*
 > *experiments.*
-> Answer: 
+> Answer:
+ 
 We used the notebooks folder for notebooks with inital data exploration to gain a better understanding of how best to create the model.
 The model is trained with the train_model.py script found in the models folder. 
 This folder also contains the model.py file, which defines the actual model.
@@ -193,11 +196,11 @@ We store tests in the test folder and docker images in the docker folder.
 > Answer length: 50-100 words.
 >
 > Answer: 
-﻿We adhered to the conventional Python style guide. It's crucial to maintain code quality and formatting rules to ensure maximum legibility for all contributors. 
+ 
+We adhered to the conventional Python style guide. It's crucial to maintain code quality and formatting rules to ensure maximum legibility for all contributors. 
 This approach facilitates better understanding and collaboration among team members making the overall development process faster 
 and less painful.
 
---- question 6 fill here ---
 
 ## Version control
 
@@ -216,7 +219,13 @@ and less painful.
 >
 > Answer:
 
---- question 7 fill here ---
+In our tests, we focused on the most critical parts of our application, namely the data processing and model training.
+
+For the data processing tests, we insured that the data was being processed without any data leakage, and that the data was being split correctly.
+
+For the model part, we tested that the output of the model was of the correct shape, which was (batch_size, sequence_length, embedding_size).
+
+Also, for the code tests, we ran tests for code format, unused imports.
 
 ### Question 8
 
@@ -231,7 +240,10 @@ and less painful.
 >
 > Answer:
 
---- question 8 fill here ---
+We tried to be as concise as possible with our tests, and we tried to minimize the amount of code that we wrote - so it was easier to test.
+As far as we know, we have 100% coverage of our code, but we are not sure if we have tested all the edge cases - as the most crucial part is the model and data processing, we tested thoroughly these parts.
+
+As far as we know, running our model with a user that has a lot of ratings (more than any user in the dataset), we can get an error for OutOfMemory, as the model is not able to handle too large inputs. This is of course a limitation of the hardware, and not the code itself.
 
 ### Question 9
 
@@ -245,7 +257,8 @@ and less painful.
 > *addition to the main branch. To merge code we ...*
 >
 > Answer: 
-﻿We adopted a systematic approach for feature development, where each new feature was crafted in a distinct branch, subsequently pulled into the 'develop' branch. For the final release, 'develop' was pulled into 'main'. 
+ 
+We adopted a systematic approach for feature development, where each new feature was crafted in a distinct branch, subsequently pulled into the 'develop' branch. For each release, 'develop' was pulled into 'main'. 
 We fluidly switched between branches as per requirement, without any specific branches being exclusive to students. 
 The use of branches and pull requests greatly simplified the process. It facilitated the segregation of features or modifications, enabling their integration into the working tree at a later stage. 
 This strategy minimized potential conflicts, ensuring a smooth, efficient workflow, and maintaining the integrity of the project.
@@ -263,13 +276,16 @@ This strategy minimized potential conflicts, ensuring a smooth, efficient workfl
 > *pipeline*
 >
 > Answer: 
+ 
 Yes. DVC was used to ensure all members had the exact same raw data and also ensured that if we wanted to include more or less 
 features for any given branch then switching to the appropriate data meant it was unncessary to generate the data again.
-In our case the data processing was not exceptionally computationally expensive, however, if our dataset had been larger then
-we would have seen more benefit. Additionally the ability to switch between different versions of processed data was highly useful when fine
-tuning the model and data pipeline
 
---- question 10 fill here ---
+In our case the data processing was not exceptionally computationally expensive, and we could run `make data` each time we changed the `make_dataset` file. 
+
+However, if our dataset had been larger than we would have seen more benefit. 
+
+For another use case of DVC, we could have used it to store the model checkpoints, and the embeddings generated by the model. 
+
 
 ### Question 11
 
@@ -297,7 +313,6 @@ efficient way to track the impact of each code change on the model's performance
 This CI setup is an effective way to maintain 
 high-quality code and to keep track of how code changes affect model performance
 
---- question 11 fill here ---
 
 ## Running code and tracking experiments
 
@@ -555,7 +570,7 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 >
 > Answer:
 
-We spend considerably too much time fine tuning the model architecture and hyperparameters. Particularly 
+We spend considerably too much time fine-tuning the model architecture and hyperparameters. Particularly 
 we struggled with generating high quality embeddings for proper training. However, The most time-consuming aspect 
 of the project was understanding and implementing the various tools and services, 
 particularly those related to Google Cloud Platform (GCP). We faced challenges in setting up and configuring the GCP services, 
@@ -581,6 +596,8 @@ problem-solving also played a crucial role in overcoming the challenges.
 >
 > Answer:
 
-Student s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
+Student s230356 did a major part in setting up docker containers, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions.
 
---- question 27 fill here ---
+Student s240558 was in charge of the model architecture, training and evaluation methods. Also was in charge of the Dataset class, and the data processing pipeline.
+
+Student s240541 had a role in fine-tuning the architecture, and was in charge of creating and deploying the cloud functions to serve the model, and the FastAPI application to serve the model locally.

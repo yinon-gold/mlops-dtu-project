@@ -26,9 +26,6 @@ class UserDataset(Dataset):
     def __getitem__(self, index):
         user_id = self.user_ids[index]
         user_ratings = self.ratings[self.ratings['user_id'] == user_id]
-        # take one random book from the user's ratings
-        # user_rating = user_ratings.sample(1)
-        # book = self.books[self.books['Name'] == user_rating['Name'].values[0]]
         user_books = user_ratings.merge(self.books, on='name')
         user_books['embed'] = (user_books['authors'] +
                                str(user_books['avg_rating'].values) +
