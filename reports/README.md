@@ -103,7 +103,8 @@ end of the project.
 ### Question 1
 > **Enter the group number you signed up on <learn.inside.dtu.dk>**
 >
-> Answer:90
+ 
+Answer: 90
 
 
 
@@ -138,6 +139,8 @@ These embeddings were then fed into the MLP model, which was trained to predict 
 Furthermore, we used the Pandas library, a powerful data manipulation tool in Python, to handle the raw data. This involved formatting, merging, and processing the data in a manner that would enable the successful creation of embeddings. 
 This comprehensive approach ensured that our model was both effective and efficient.
 
+We used W&B to track our experiments, and to log the results of our experiments.
+
 
 ## Coding environment
 
@@ -157,14 +160,11 @@ This comprehensive approach ensured that our model was both effective and effici
 > Answer: 
 
 In order to manage dependencies more efficiently, we utilized virtual environments. 
-The pipreqs python package was employed to generate requirements, which were subsequently installed using pip. 
-For a new team member to contribute to this project, the process is quite straightforward. 
-They simply need to establish a new virtual environment. 
-Following this, they must install the necessary requirements. 
-These can be found in a file named requirements.txt. 
-This approach ensures a smooth transition for new team members, 
-allowing them to quickly adapt and contribute to the project, while also maintaining consistency in the development environment.
+We used pip freeze to generate requirements, and then put them in requirements.txt.
 
+For a new team member to contribute to this project, the process is straightforward. 
+
+They would have to clone the repository, create a virtual environment, and install the dependencies from the requirements.txt file.
 
 
 ### Question 5
@@ -180,12 +180,12 @@ allowing them to quickly adapt and contribute to the project, while also maintai
 > *experiments.*
 > Answer:
  
-We used the notebooks folder for notebooks with inital data exploration to gain a better understanding of how best to create the model.
+We used the notebooks folder for notebooks with initial data exploration to gain a better understanding of how best to create the model.
 The model is trained with the train_model.py script found in the models folder. 
 This folder also contains the model.py file, which defines the actual model.
 When training the script will read from various config files (.yaml) to properly set hyperparameters.
-In the models folder we also stored a script to generate evaluations- evaluations.py
-We store tests in the test folder and docker images in the docker folder.
+The data folder contains the raw data, and the processed data.
+The data folder in the package folder contains the data processing pipeline, and the dataset class.
 
 
 ### Question 6
@@ -373,6 +373,9 @@ We think this is due to the small size of the training set, and the fact that th
 It plausible that because our model's input is a changing sequence length for a transformer embedding, we needed to use a large capacity of training for it to converge. 
 This is why we decided to increase the size of the subset used for experimentation.
 After that, we ran a hyperparameter sweep to find the best hyperparameters for our model - looking at different learning rates we can use.
+The sweep can be seen in the following image:
+
+![lr_sweep](figures/lr_sweep.png)
 
 Although we didn't use this option, we could've searched for the best lr scheduler as well, but we decided to use a constant learning rate.
 
@@ -389,10 +392,8 @@ Although we didn't use this option, we could've searched for the best lr schedul
 >
 > Answer:
 
-For experimenting with the model, we didn't use docker, as we had access to an HPC server with GPUs from our faculty.
+For experimenting with the model, we used docker through access to an HPC server with GPUs from our faculty.
 This allowed us to run our experiments faster, and with more resources than we would have had access to with docker on the cloud.
-
-However, we did use docker for our final model, as we wanted to deploy it on the cloud. We had a docker image for training, and one for inference.
 
 ### Question 16
 
@@ -429,10 +430,15 @@ We used various debugging tools and techniques, such as breakpoints, print state
 > Answer:
  
 
-Compute Engine: Service that allows for the creation of VMs adhoc. Used for training
+Compute Engine: Service that allows for the creation of VMs adhoc. Used for experimentation with training in the beginning.
+
 Artifact registry: Used to store out docker images for training and inference
+
 Vertex AI: Used with docker container to train more easily
+
 Bucket: Data storage, used to store our raw and processed data
+
+Cloud functions: Used to serve our model
 
 
 ### Question 18
@@ -450,8 +456,7 @@ Bucket: Data storage, used to store our raw and processed data
 
 For training purposes we have used the Technion's data centers for our experiments, as we had access to GPUs there. We have built a docker image for training, and deployed the containers on the HPC server. 
 
-We used the GCP functions to serve our model, and the GCP bucket to store our data.
-We did not have to use the compute engine for our project, as we had access to the HPC server.
+We did not have to use the compute engine for our project for the long training part, as we had access to the HPC server.
 
 
 ### Question 19
@@ -461,12 +466,9 @@ We did not have to use the compute engine for our project, as we had access to t
 >
 > Answer:
 
-```markdown
 ![my_image](figures/bucketFiles.png)
 ![my_image](figures/bucket.png)
-```
 
---- question 19 fill here ---
 
 ### Question 20
 
@@ -516,7 +518,11 @@ We deployed our model using Google Cloud Functions. We deployed everything (code
 >
 > Answer:
 
-We did not manage to implement monitoring of our deployed model. However, we would like to have monitoring implemented such that over time we could measure the loss overtime of the model in order to inform us of data driffting and model degradation. This would allow us to retrain the model when necessary. Additionally we could use monitoring with human feedback from our users from time to time.
+We did not manage to implement monitoring of our deployed model. 
+However, we would like to have monitoring implemented such that over time we could measure the loss overtime of the model in order to inform us of data drifting and model degradation. 
+This would allow us to retrain the model when necessary. 
+
+Additionally, we could use monitoring with human feedback from our users from time to time.
 
 ### Question 24
 
@@ -530,7 +536,8 @@ We did not manage to implement monitoring of our deployed model. However, we wou
 >
 > Answer:
 
-Not more than 200dkk. We spent most of the budget on making experiments at the begining with the compute engine and eventually decided to continue the experiments on the HPC server we had access to (as mentioned before). We then spent most of our budget on serving the model through cloud functions and the bucket for storage.
+Not more than 200dkk. 
+We spent most of the budget on making experiments at the begining with the compute engine and eventually decided to continue the experiments on the HPC server we had access to (as mentioned before). We then spent most of our budget on serving the model through cloud functions and the bucket for storage.
 
 
 ## Overall discussion of project
@@ -566,11 +573,13 @@ Not more than 200dkk. We spent most of the budget on making experiments at the b
 >
 > Answer:
 
-We spend considerably too much time fine-tuning the model architecture and hyperparameters. Particularly 
-we struggled with generating high quality embeddings for proper training. However, The most time-consuming aspect 
-of the project was understanding and implementing the various tools and services, 
-particularly those related to Google Cloud Platform (GCP). We faced challenges in setting up and configuring the GCP services, 
-managing dependencies, and ensuring the smooth running of our experiments in the cloud. 
+We spent most of our time implementing a complex model using language models, and experimenting with them. 
+Particularly we spent a lot of time figuring out how to create high quality embeddings from BERT for proper training.
+
+Another time-consuming aspect was integrating with the cloud, and learning about using GCP services.
+
+We faced challenges in setting up and configuring the GCP services, 
+managing dependencies, and ensuring the smooth serving of our models in the cloud. 
 To overcome these challenges, we extensively researched the tools and services, consulted online tutorials and documentation. 
 Additionally, we spent considerable time debugging and 
 optimizing our code to ensure its efficiency and effectiveness. Regular team meetings and collaborative 
@@ -594,6 +603,6 @@ problem-solving also played a crucial role in overcoming the challenges.
 
 Student s230356 did a major part in setting up docker containers, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions.
 
-Student s240558 was in charge of the model architecture, training and evaluation methods. Also was in charge of the Dataset class, and the data processing pipeline.
+Student s240558 was in charge of the model architecture, training and evaluation methods, and experimentation. Also was in charge of the Dataset class, and the data processing pipeline. Deployed the model to GCP Cloud Functions.
 
-Student s240541 had a role in fine-tuning the architecture, and was in charge of creating and deploying the cloud functions to serve the model, and the FastAPI application to serve the model locally.
+Student s240541 had a role in fine-tuning the architecture, and was in charge of creating and deploying the cloud functions to serve the model in the cloud.

@@ -1,3 +1,5 @@
+import copy
+
 import pandas as pd
 import os
 
@@ -27,6 +29,8 @@ class UserDataset(Dataset):
         user_id = self.user_ids[index]
         user_ratings = self.ratings[self.ratings['user_id'] == user_id]
         user_books = user_ratings.merge(self.books, on='name')
+        datas = copy.deepcopy(user_books)
+        datas.drop(labels=['user_id', 'rating'], inplace=True, axis=1)
         user_books['embed'] = (user_books['authors'] +
                                str(user_books['avg_rating'].values) +
                                str(user_books['publish_year'].values) +
@@ -48,5 +52,6 @@ class UserDataset(Dataset):
             'book_embed': e['input_ids'],
             'book_attention_mask': e['attention_mask'],
             'book_id': user_books['book_id'].values,
+            'datas': datas,
             'rating': torch.transpose(torch.from_numpy(user_books['rating'].values), 0, -1).float()
         }
