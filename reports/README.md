@@ -355,7 +355,6 @@ thereby ensuring optimal results and high standards in the project's progression
 For our experiments we used OmegaConf to load the configurations and manage our hyperparameters.
 These include: learning rate, batch size, epochs, loss function, and embedding size (hidden size of our BERT variant), and the bert checkpoint (model) we used from HuggingFace.
 For a simple control over wandb logging we also included a flag to turn it on or off using argparser.
-This flag allows us to easily turn the logging feature on or off, enhancing our control over the experiment's logging process.
 
 ### Question 13
 
@@ -369,7 +368,9 @@ This flag allows us to easily turn the logging feature on or off, enhancing our 
 > *one would have to do ...*
 >
 > Answer:
-﻿In our project, we have taken careful measures to ensure the reproducibility of our experiments. 
+ 
+ 
+In our project, we have taken careful measures to ensure the reproducibility of our experiments. 
 One such measure is the use of a seed for all operations that involve randomness. 
 By setting a seed, we ensure that the random numbers generated in our experiments are predictable and consistent, 
 which is crucial for reproducing results. 
