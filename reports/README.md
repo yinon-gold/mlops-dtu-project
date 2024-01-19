@@ -447,14 +447,12 @@ Bucket: Data storage, used to store our raw and processed data
 > *using a custom container: ...*
 >
 > Answer:
-We used compute engine to train the model on an 8 core high performing cpu VM. 
-We started the compute engine with a docker image uploaded to the registry. This docker image mounted the bucket data and
-created a processed dataset which it then used for training.
 
-We used a similar process for inference.
+For training purposes we have used the Technion's data centers for our experiments, as we had access to GPUs there. We have built a docker image for training, and deployed the containers on the HPC server. 
 
+We used the GCP functions to serve our model, and the GCP bucket to store our data.
+We did not have to use the compute engine for our project, as we had access to the HPC server.
 
---- question 18 fill here ---
 
 ### Question 19
 
@@ -477,9 +475,7 @@ We used a similar process for inference.
 >
 > Answer:
 
-```markdown
-![my_image](figures/registry.png)
-```
+As mentioned in question 18, we did not use the GCP container registry, as we had access to the HPC server. We do have checkpoints for weights and biases, but we did not store them in the container registry.
 
 
 ### Question 21
@@ -489,7 +485,7 @@ We used a similar process for inference.
 >
 > Answer:
 
---- question 21 fill here ---
+As mentioned in question 18, we did not use the GCP cloud build history, as we had access to the HPC server. The cloud build history would have been useful if we had used the GCP compute engine to train our model but since we did not, we did not use it.
 
 ### Question 22
 
@@ -505,7 +501,7 @@ We used a similar process for inference.
 >
 > Answer:
 
---- question 22 fill here ---
+We deployed our model using Google Cloud Functions. We deployed everything (code, data, and model) to the gcp bucket, and then we used the cloud functions to serve the model.
 
 ### Question 23
 
@@ -520,7 +516,7 @@ We used a similar process for inference.
 >
 > Answer:
 
---- question 23 fill here ---
+We did not manage to implement monitoring of our deployed model. However, we would like to have monitoring implemented such that over time we could measure the loss overtime of the model in order to inform us of data driffting and model degradation. This would allow us to retrain the model when necessary. Additionally we could use monitoring with human feedback from our users from time to time.
 
 ### Question 24
 
@@ -534,7 +530,7 @@ We used a similar process for inference.
 >
 > Answer:
 
-Not more than 200dkk. Most expensive service was compute engine closely followed by storage.
+Not more than 200dkk. We spent most of the budget on making experiments at the begining with the compute engine and eventually decided to continue the experiments on the HPC server we had access to (as mentioned before). We then spent most of our budget on serving the model through cloud functions and the bucket for storage.
 
 
 ## Overall discussion of project

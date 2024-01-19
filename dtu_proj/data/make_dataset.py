@@ -4,6 +4,8 @@ import os
 
 
 data_dir = 'data'  # TODO move to config
+print(os.getcwd())
+print(os.listdir(data_dir))
 raw_data_dir = os.path.join(data_dir, 'raw')
 processed_data_dir = os.path.join(data_dir, 'processed')
 
