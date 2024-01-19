@@ -159,13 +159,13 @@ We used W&B to track our experiments, and to log the results of our experiments.
 >
 > Answer: 
 
-In order to manage dependencies more efficiently, we utilized virtual environments. 
-We used pip freeze to generate requirements, and then put them in requirements.txt.
-
-For a new team member to contribute to this project, the process is straightforward. 
-
-They would have to clone the repository, create a virtual environment, and install the dependencies from the requirements.txt file.
-
+﻿To manage dependencies effectively, we employed virtual environments. This approach allows us to isolate dependencies per project, ensuring no conflicts occur. 
+We used pip freeze, a command that generates a list of all installed packages, to create our requirements. 
+These were then stored in a requirements.txt file, serving as a reference for necessary packages. 
+For a new team member to join our project, the process is simple and straightforward. 
+They would first clone the repository, which is a copy of our project. 
+Next, they would create a virtual environment, a self-contained location where they can install packages without affecting the global Python environment. 
+Finally, they would install the dependencies from the requirements.txt file, ensuring they have all the necessary packages to contribute to the project.
 
 ### Question 5
 
@@ -180,12 +180,23 @@ They would have to clone the repository, create a virtual environment, and insta
 > *experiments.*
 > Answer:
  
-We used the notebooks folder for notebooks with initial data exploration to gain a better understanding of how best to create the model.
-The model is trained with the train_model.py script found in the models folder. 
-This folder also contains the model.py file, which defines the actual model.
-When training the script will read from various config files (.yaml) to properly set hyperparameters.
-The data folder contains the raw data, and the processed data.
-The data folder in the package folder contains the data processing pipeline, and the dataset class.
+﻿The project structure includes a designated 'notebooks' folder. 
+This folder is a repository of notebooks that were utilized during the initial stages of data exploration. 
+The purpose of these notebooks was to gain a comprehensive understanding of the data and to identify the most effective approach for model creation. 
+
+The 'models' folder is another crucial component of the project. 
+This folder houses the 'train_model.py' script, which is responsible for training the model. 
+In addition, the 'model.py' file, which defines the structure and parameters of the model, is also located in this folder. 
+
+During the training process, the script reads from a variety of configuration files, specifically those with a .yaml extension. 
+These configuration files are instrumental in setting the appropriate hyperparameters for the model, ensuring optimal performance.
+
+The 'data' folder is another key component of the project structure. 
+This folder is the storage location for both the raw and processed data that is used in the project. 
+
+Within the 'package' folder, there is another 'data' folder. This particular folder contains the 
+data processing pipeline and the dataset class. These elements are critical for the transformation and 
+management of the data throughout the project.
 
 
 ### Question 6
@@ -197,9 +208,13 @@ The data folder in the package folder contains the data processing pipeline, and
 >
 > Answer: 
  
-We adhered to the conventional Python style guide. It's crucial to maintain code quality and formatting rules to ensure maximum legibility for all contributors. 
-This approach facilitates better understanding and collaboration among team members making the overall development process faster 
-and less painful.
+﻿In our project, we have adhered strictly to the standard Python style guide, 
+which places a significant emphasis on code quality and formatting with the ultimate goal of achieving optimal legibility. 
+This approach is not just about aesthetics or arbitrary rules; 
+it's about fostering an environment that encourages enhanced comprehension among all contributors. 
+By ensuring that our code is clean, well-structured, and consistently formatted, we make it easier for others to read, understand, 
+and contribute to the project. This strategy has proven to be invaluable in streamlining the development process, 
+making it significantly more efficient and less cumbersome. 
 
 
 ## Version control
@@ -263,6 +278,8 @@ We fluidly switched between branches as per requirement, without any specific br
 The use of branches and pull requests greatly simplified the process. It facilitated the segregation of features or modifications, enabling their integration into the working tree at a later stage. 
 This strategy minimized potential conflicts, ensuring a smooth, efficient workflow, and maintaining the integrity of the project.
 
+At the beginning of the project we used personal branches.
+
 
 ### Question 10
 
@@ -313,6 +330,10 @@ efficient way to track the impact of each code change on the model's performance
 This CI setup is an effective way to maintain 
 high-quality code and to keep track of how code changes affect model performance
 
+In essence, this Continuous Integration (CI) setup is an effective and efficient way to maintain high-quality code. 
+It also provides a systematic approach to keep track of how code changes affect model performance, 
+thereby ensuring optimal results and high standards in the project's progression.
+
 
 ## Running code and tracking experiments
 
@@ -334,6 +355,7 @@ high-quality code and to keep track of how code changes affect model performance
 For our experiments we used OmegaConf to load the configurations and manage our hyperparameters.
 These include: learning rate, batch size, epochs, loss function, and embedding size (hidden size of our BERT variant), and the bert checkpoint (model) we used from HuggingFace.
 For a simple control over wandb logging we also included a flag to turn it on or off using argparser.
+This flag allows us to easily turn the logging feature on or off, enhancing our control over the experiment's logging process.
 
 ### Question 13
 
@@ -347,9 +369,19 @@ For a simple control over wandb logging we also included a flag to turn it on or
 > *one would have to do ...*
 >
 > Answer:
+﻿In our project, we have taken careful measures to ensure the reproducibility of our experiments. 
+One such measure is the use of a seed for all operations that involve randomness. 
+By setting a seed, we ensure that the random numbers generated in our experiments are predictable and consistent, 
+which is crucial for reproducing results. 
 
-We made sure to use a seed for all random operations. We also made sure to use the same data for all experiments.
-To reproduce an experiment one would have to run the same config file with the same data - we just need to use the same `config.yaml`.
+Furthermore, we have made it a point to use the same data across all experiments. 
+This consistency in data usage eliminates the possibility of variations in results due to different data sets. 
+
+To reproduce an experiment, one would simply need to run the same 
+configuration file with the same data. Specifically, the `config.yaml` file would need to be used. 
+This file contains all the necessary parameters and settings for the experiment. 
+By using the same `config.yaml` file and the same data, anyone can reproduce our experiments with high fidelity, 
+ensuring the reliability and validity of our results.
 
 ### Question 14
 
@@ -377,8 +409,10 @@ The sweep can be seen in the following image:
 
 ![lr_sweep](figures/lr_sweep.png)
 
-Although we didn't use this option, we could've searched for the best lr scheduler as well, but we decided to use a constant learning rate.
-
+While we had the option to search for the best learning rate (lr) scheduler, we opted to use a constant learning rate. 
+This decision was made based on our specific model requirements and the nature of our data. 
+However, it's worth noting that exploring different 
+lr schedulers could potentially lead to further improvements in future iterations of the model.
 ### Question 15
 
 > **Docker is an important tool for creating containerized applications. Explain how you used docker in your**
@@ -412,6 +446,13 @@ This allowed us to run our experiments faster, and with more resources than we w
 When encountering bugs during the execution of our experiments, we utilized a systematic debugging approach. 
 This involved identifying the issue, isolating the part of the code causing the problem, and then implementing a solution.
 We used various debugging tools and techniques, such as breakpoints, print statements, and logging, to assist in this process. 
+
+To assist in this comprehensive debugging process, we utilized a variety of debugging tools and techniques. 
+These included setting breakpoints, which allowed us to pause the execution of the program at specific points 
+and examine the state of the system. We also used print statements to output the values of variables at different 
+stages of execution. Additionally, we employed logging to record the flow of the program, which was particularly 
+useful for tracking down elusive bugs that were difficult to reproduce. This systematic approach to debugging 
+ensured efficient and effective resolution of issues, maintaining the integrity of our experiments.
 
 
 ## Working in the cloud
@@ -505,6 +546,7 @@ We did not use the GCP cloud build history, as we had access to the HPC server.
 We deployed our model using Google Cloud Functions. 
 We deployed everything (code, data, and model) to the gcp bucket, and then we used the cloud functions to serve the model.
 
+
 ### Question 23
 
 > **Did you manage to implement monitoring of your deployed model? If yes, explain how it works. If not, explain how**
@@ -524,7 +566,7 @@ However, having monitoring in place would have been beneficial for the longevity
 Monitoring would allow us to track the performance of our model over time, identify any potential issues or anomalies, 
 and understand how the model is being used. It could provide insights into the accuracy of the model's predictions, 
 the volume of requests it's handling, and its response times. 
-This information could then be used to make necessary adjustments or improvements, 
+This information could have then be used to make necessary adjustments or improvements, 
 ensuring the model continues to perform optimally and meet users' needs.
 
 ### Question 24
@@ -579,7 +621,9 @@ The user has the following options:
 The dev has the following options
 - push and pull to github as he pleases
 	- with every push his build is sent to wandb which will return a csv file with various model metrics
+		- This process aids in tracking and improving model performance over time. 
 	- linting will also be checked to ensure high quality code standard
+		- promoting clean and efficient code by showing a failed test if a particular push does not pass the lint8 test
 	
 - push new docker images to the registry
 	- these images will then serve the user role be used in future training. The existing docker image will be overwritten
@@ -599,6 +643,7 @@ The dev has the following options
 
 We spent most of our time implementing a complex model using language models, and experimenting with them. 
 Particularly we spent a lot of time figuring out how to create high quality embeddings from BERT for proper training.
+We wanted to ensure the scalability and robustness of our model and sought to prevent overfitting over under performance.
 
 Another time-consuming aspect was integrating with the cloud, and learning about using GCP services.
 
@@ -608,7 +653,12 @@ To overcome these challenges, we extensively researched the tools and services, 
 Additionally, we spent considerable time debugging and 
 optimizing our code to ensure its efficiency and effectiveness. Regular team meetings and collaborative 
 problem-solving also played a crucial role in overcoming the challenges.
+﻿In addition to the aforementioned tasks, we also invested a significant amount of time in data preprocessing and cleaning.
+This involved removing any irrelevant or redundant information, dealing with missing or incomplete data, 
+and transforming the data into a format suitable for our model.
 
+Lastly, we also focused on documentation and communication. We made sure to document our processes, findings, and decisions so
+that every group member was aware of the total scope of the project.
 
 ### Question 27
 
