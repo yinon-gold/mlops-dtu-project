@@ -490,7 +490,13 @@ We used a similar process for inference.
 >
 > Answer:
 
---- question 23 fill here ---
+﻿We did not manage to implement monitoring for our deployed model. 
+However, having monitoring in place would have been beneficial for the longevity and reliability of our application. 
+Monitoring would allow us to track the performance of our model over time, identify any potential issues or anomalies, 
+and understand how the model is being used. It could provide insights into the accuracy of the model's predictions, 
+the volume of requests it's handling, and its response times. 
+This information could then be used to make necessary adjustments or improvements, 
+ensuring the model continues to perform optimally and meet users' needs.
 
 ### Question 24
 
@@ -506,7 +512,6 @@ We used a similar process for inference.
 
 Not more than 200dkk. Most expensive service was compute engine closely followed by storage.
 
---- question 24 fill here ---
 
 ## Overall discussion of project
 
@@ -526,8 +531,10 @@ Not more than 200dkk. Most expensive service was compute engine closely followed
 > *Whenever we commit code and puch to github, it auto triggers ... and ... . From there the diagram shows ...*
 >
 > Answer:
+```markdown
+![my_image](figures/overview.png)
+```
 
---- question 25 fill here ---
 
 ### Question 26
 
@@ -550,7 +557,6 @@ Additionally, we spent considerable time debugging and
 optimizing our code to ensure its efficiency and effectiveness. Regular team meetings and collaborative 
 problem-solving also played a crucial role in overcoming the challenges.
 
---- question 26 fill here ---
 
 ### Question 27
 
@@ -567,6 +573,6 @@ problem-solving also played a crucial role in overcoming the challenges.
 >
 > Answer:
 
-Studen s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
+Student s230356 was in charge of setting up docker containers, model architecture, data formatting, GCP configuration, DVC configuration of data and Compute Engine configuration. Setup of CI using github actions
 
---- question 27 fill here ---
+
