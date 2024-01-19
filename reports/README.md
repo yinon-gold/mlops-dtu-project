@@ -452,11 +452,12 @@ Cloud functions: Used to serve our model
 > *using a custom container: ...*
 >
 > Answer:
+We orignally used a compute engine on GCP to train the model on an 8 core high performing cpu VM. 
+We started the compute engine with a docker image uploaded to the registry. 
+This docker image mounted the bucket data and created a processed dataset which it then used for training.
 
-For training purposes we have used the Technion's data centers for our experiments, as we had access to GPUs there. We have built a docker image for training, and deployed the containers on the HPC server. 
-
-We did not have to use the compute engine for our project for the long training part, as we had access to the HPC server.
-
+However, since Technion's data centers made their HPC server available to use for training we later opted to use it for both training and our experiments, as we had access to GPUs there. 
+We have built a docker image for training, and deployed the containers on the HPC server. 
 
 ### Question 19
 
@@ -476,8 +477,7 @@ We did not have to use the compute engine for our project for the long training 
 >
 > Answer:
 
-As mentioned in question 18, we did not use the GCP container registry, as we had access to the HPC server. We do have checkpoints for weights and biases, but we did not store them in the container registry.
-
+![my_image](figures/registry.png)
 
 ### Question 21
 
@@ -486,7 +486,7 @@ As mentioned in question 18, we did not use the GCP container registry, as we ha
 >
 > Answer:
 
-As mentioned in question 18, we did not use the GCP cloud build history, as we had access to the HPC server. The cloud build history would have been useful if we had used the GCP compute engine to train our model but since we did not, we did not use it.
+We did not use the GCP cloud build history, as we had access to the HPC server.
 
 ### Question 22
 
@@ -502,7 +502,8 @@ As mentioned in question 18, we did not use the GCP cloud build history, as we h
 >
 > Answer:
 
-We deployed our model using Google Cloud Functions. We deployed everything (code, data, and model) to the gcp bucket, and then we used the cloud functions to serve the model.
+We deployed our model using Google Cloud Functions. 
+We deployed everything (code, data, and model) to the gcp bucket, and then we used the cloud functions to serve the model.
 
 ### Question 23
 
@@ -539,7 +540,8 @@ ensuring the model continues to perform optimally and meet users' needs.
 > Answer:
 
 Not more than 200dkk. 
-We spent most of the budget on making experiments at the begining with the compute engine and eventually decided to continue the experiments on the HPC server we had access to (as mentioned before). We then spent most of our budget on serving the model through cloud functions and the bucket for storage.
+We spent most of the budget on making experiments at the begining with the compute engine and eventually decided to continue the experiments on the HPC server we had access to (as mentioned before). 
+We then spent most of our budget on serving the model through cloud functions and the bucket for storage.
 
 
 ## Overall discussion of project
@@ -560,10 +562,28 @@ We spent most of the budget on making experiments at the begining with the compu
 > *Whenever we commit code and puch to github, it auto triggers ... and ... . From there the diagram shows ...*
 >
 > Answer:
-```markdown
-![my_image](figures/overview.png)
-```
 
+![my_image](figures/overview.png)
+
+This diagram follows two roles a user that wishes to use the model and a developer that wishes to contribute to the 
+project. 
+
+The user has the following options:
+- access model output through a restful API
+	- the output from the model is served through cloud functions which loads the model from a gcp bucket and returns the output
+	- the model is pulled from the registry and trained on the HPC server
+- clone the source code and run training or inference locally using a virtual environment
+- pull various docker images from the container registry to ensure reproducibility
+
+
+The dev has the following options
+- push and pull to github as he pleases
+	- with every push his build is sent to wandb which will return a csv file with various model metrics
+	- linting will also be checked to ensure high quality code standard
+	
+- push new docker images to the registry
+	- these images will then serve the user role be used in future training. The existing docker image will be overwritten
+	
 
 ### Question 26
 
